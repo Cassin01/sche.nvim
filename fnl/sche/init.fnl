@@ -3,10 +3,19 @@
 ;; Macros
 
 (import-macros {: epi : when-let : au! : async-do! } :lua.sche.macros)
-; (import-macros {: epi : when-let} :util.macros)
-; (import-macros {: au! : async-do!} :kaza.macros)
 
 ;; Functions
+(fn bmap [bufnr mode key cmd desc]
+  (if (= (type cmd) :string)
+    (vim.api.nvim_buf_set_keymap bufnr mode key cmd {:noremap true :silent true :desc desc})
+    (vim.api.nvim_buf_set_keymap bufnr mode key "" {:callback cmd :noremap true :silent true :desc desc})))
+
+
+
+(fn u-cmd [name f ?opt]
+       (let [opt (or ?opt {})]
+         (tset opt :force true)
+         (vim.api.nvim_create_user_command name f opt)))
 
 
 (fn _cons [x ...]
@@ -25,7 +34,7 @@
 (fn read_lines [path]
   (local f (io.open path :r))
   (when (not= f nil)
-    (do 
+    (do
       (_unfold-iter (f.lines f) f (lambda [f] (f.close f))))))
 
 (fn concat-with [d ...]
@@ -64,7 +73,6 @@
 (local create_autocmd vim.api.nvim_create_autocmd)
 ; (local v-date "\\d\\d\\d\\d/\\d\\d/\\d\\d")
 ; (local l-date "%d%d%d%d/%d%d/%d%d")
-(local {: u-cmd} (require :kaza))
 (macro thrice-if [sentense lst]
   (fn car [x ...] x)
   (fn cdr [x ...] [...])
@@ -223,7 +231,6 @@
 
 (local default_keymap ; INFO: pub
   (λ []
-    (local {: bmap} (require :kaza.map))
     (local s keysource)
     (macro desc [d]
       (.. "sche: " d))

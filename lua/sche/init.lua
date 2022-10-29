@@ -1,3 +1,15 @@
+local function bmap(bufnr, mode, key, cmd, desc)
+  if (type(cmd) == "string") then
+    return vim.api.nvim_buf_set_keymap(bufnr, mode, key, cmd, {noremap = true, silent = true, desc = desc})
+  else
+    return vim.api.nvim_buf_set_keymap(bufnr, mode, key, "", {callback = cmd, noremap = true, silent = true, desc = desc})
+  end
+end
+local function u_cmd(name, f, _3fopt)
+  local opt = (_3fopt or {})
+  do end (opt)["force"] = true
+  return vim.api.nvim_create_user_command(name, f, opt)
+end
 local function _cons(x, ...)
   return {x, ...}
 end
@@ -19,11 +31,11 @@ end
 local function read_lines(path)
   local f = io.open(path, "r")
   if (f ~= nil) then
-    local function _3_(f0)
-      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:29")
+    local function _4_(f0)
+      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:38")
       return f0.close(f0)
     end
-    return _unfold_iter(f.lines(f), f, _3_)
+    return _unfold_iter(f.lines(f), f, _4_)
   else
     return nil
   end
@@ -32,31 +44,31 @@ local function concat_with(d, ...)
   return table.concat({...}, d)
 end
 local default_cnf
-local function _5_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:40")
+local function _6_(annex)
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:49")
   return ("There is a chedule: " .. annex)
 end
-local function _6_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:41")
+local function _7_(annex)
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:50")
   return ("There is a memo: " .. annex)
 end
-local function _7_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:42")
+local function _8_(annex)
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:51")
   return ("There is a todo: " .. annex)
 end
-local function _8_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:43")
+local function _9_(annex)
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:52")
   return ("There is a remainder: " .. annex)
 end
-local function _9_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:44")
+local function _10_(annex)
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:53")
   return ("There is a deadline: " .. annex)
 end
-local function _10_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:45")
+local function _11_(annex)
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:54")
   return ("You have completed: " .. annex)
 end
-default_cnf = {default_keymap = true, notify = {["@"] = _5_, ["#"] = _6_, ["+"] = _7_, ["-"] = _8_, ["!"] = _9_, ["."] = _10_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
+default_cnf = {default_keymap = true, notify = {["@"] = _6_, ["#"] = _7_, ["+"] = _8_, ["-"] = _9_, ["!"] = _10_, ["."] = _11_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
 local function _get_cnf()
   local cnf = vim.g["_sche#cnf"]
   if (cnf == nil) then
@@ -66,8 +78,6 @@ local function _get_cnf()
   end
 end
 local create_autocmd = vim.api.nvim_create_autocmd
-local _local_12_ = require("kaza")
-local u_cmd = _local_12_["u-cmd"]
 local function append(lst, x)
   lst[(#lst + 1)] = x
   return lst
@@ -342,11 +352,11 @@ end
 local function _50_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _51_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:212")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:220")
     return (item .. " " .. item_dict[item])
   end
   local function _52_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:214")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:222")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
@@ -361,8 +371,6 @@ end
 keysource = {["goto-today"] = _48_, ["goto-tomorrow"] = _49_, ["select-mark"] = _50_}
 local default_keymap
 local function _54_()
-  local _local_55_ = require("kaza.map")
-  local bmap = _local_55_["bmap"]
   local s = keysource
   for _, k in ipairs({{"n", "<space><space>t", s["goto-today"], "sche: goto-today"}, {"n", "<space><space>y", s["goto-tomorrow"], "sche: goto-tomorrow"}, {"n", "<space><space>m", s["select-mark"], "sche: select-mark"}}) do
     bmap(0, unpack(k))
@@ -373,7 +381,7 @@ default_keymap = _54_
 local function buf_setup()
   return default_keymap()
 end
-local function _56_()
+local function _55_()
   if _get_cnf().default_keymap then
     buf_setup()
   else
@@ -406,5 +414,5 @@ local function _56_()
     return nil
   end
 end
-create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _56_, pattern = {"*.sche"}, group = "pattern"})
+create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _55_, pattern = {"*.sche"}, group = "pattern"})
 return {keysource = keysource, setup = setup}

@@ -21,6 +21,8 @@ INTRODUCTION						*sche-introduction*
 
 *sche.nvim* is a text-based schedule management plugin for neovim.
 
+*sche.nvim* is inspired by howm syntax.
+
 If you don't want to configure plugins, you don't have to use the plugin.
 It does not work with zero configuration.  You can use other plugins.
 
