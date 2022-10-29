@@ -153,7 +153,8 @@
         (do
           (tset vim.g :_sche#cnf cnf)
           cnf))))
-  (set_highlight))
+  ; (set_highlight)
+  )
 (fn read-data [data]
   (local notify (. (_get_cnf) :notify))
   (var ret "")
