@@ -5,11 +5,6 @@ local function bmap(bufnr, mode, key, cmd, desc)
     return vim.api.nvim_buf_set_keymap(bufnr, mode, key, "", {callback = cmd, noremap = true, silent = true, desc = desc})
   end
 end
-local function u_cmd(name, f, _3fopt)
-  local opt = (_3fopt or {})
-  do end (opt)["force"] = true
-  return vim.api.nvim_create_user_command(name, f, opt)
-end
 local function _cons(x, ...)
   return {x, ...}
 end
@@ -32,7 +27,7 @@ local function read_lines(path)
   local f = io.open(path, "r")
   if (f ~= nil) then
     local function _4_(f0)
-      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:36")
+      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:31")
       return f0.close(f0)
     end
     return _unfold_iter(f.lines(f), f, _4_)
@@ -45,27 +40,27 @@ local function concat_with(d, ...)
 end
 local default_cnf
 local function _6_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:56")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:51")
   return ("There is a chedule: " .. annex)
 end
 local function _7_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:57")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:52")
   return ("There is a memo: " .. annex)
 end
 local function _8_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:58")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:53")
   return ("There is a todo: " .. annex)
 end
 local function _9_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:59")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:54")
   return ("There is a remainder: " .. annex)
 end
 local function _10_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:60")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:55")
   return ("There is a deadline: " .. annex)
 end
 local function _11_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:61")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:56")
   return ("You have completed: " .. annex)
 end
 default_cnf = {default_keymap = true, hl = {GCalendarMikan = {fg = "#F4511E"}, GCalendarPeacock = {fg = "#039BE5"}, GCalendarGraphite = {fg = "#616161"}, GCalendarSage = {fg = "#33B679"}, GCalendarBanana = {fg = "#f6bf26"}, GCalendarLavender = {fg = "#7986cb"}, GCalendarTomato = {fg = "#d50000"}, GCalendarFlamingo = {fg = "#e67c73"}}, notify = {["@"] = _6_, ["#"] = _7_, ["+"] = _8_, ["-"] = _9_, ["!"] = _10_, ["."] = _11_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
@@ -154,12 +149,6 @@ local function parser(b_lines)
   end
   return ret
 end
-local function _23_()
-  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, 1)
-  local ob = parser(lines)
-  return print(vim.inspect(ob))
-end
-u_cmd("ParseSche", _23_)
 local function syntax(group, pat, ...)
   return vim.cmd(concat_with(" ", "syntax", "match", group, pat, ...))
 end
@@ -171,18 +160,18 @@ local function set_highlight(group, fg, bg)
 end
 do
   local opt_1_auto
-  local function _24_()
+  local function _23_()
     return set_highlight()
   end
-  local _25_
+  local _24_
   if (type("match-hi-sche") == "string") then
-    _25_ = vim.api.nvim_create_augroup("match-hi-sche", {clear = true})
+    _24_ = vim.api.nvim_create_augroup("match-hi-sche", {clear = true})
   elseif (type("match-hi-sche") == "number") then
-    _25_ = "match-hi-sche"
+    _24_ = "match-hi-sche"
   else
-    _25_ = print("au: group must be number or string", "match-hi-sche")
+    _24_ = print("au: group must be number or string", "match-hi-sche")
   end
-  opt_1_auto = {callback = _24_, group = _25_}
+  opt_1_auto = {callback = _23_, group = _24_}
   for k_2_auto, v_3_auto in pairs((nil or {})) do
     opt_1_auto[k_2_auto] = v_3_auto
   end
@@ -280,24 +269,24 @@ local function notify_main()
 end
 do
   local opt_1_auto
-  local function _39_()
+  local function _38_()
     local async_8_auto = nil
-    local function _40_()
+    local function _39_()
       notify_main()
       return async_8_auto:close()
     end
-    async_8_auto = vim.loop.new_async(vim.schedule_wrap(_40_))
+    async_8_auto = vim.loop.new_async(vim.schedule_wrap(_39_))
     return async_8_auto:send()
   end
-  local _41_
+  local _40_
   if (type("sche-parse") == "string") then
-    _41_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
+    _40_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
   elseif (type("sche-parse") == "number") then
-    _41_ = "sche-parse"
+    _40_ = "sche-parse"
   else
-    _41_ = print("au: group must be number or string", "sche-parse")
+    _40_ = print("au: group must be number or string", "sche-parse")
   end
-  opt_1_auto = {callback = _39_, group = _41_}
+  opt_1_auto = {callback = _38_, group = _40_}
   for k_2_auto, v_3_auto in pairs(({pattern = {"*.sche"}} or {})) do
     opt_1_auto[k_2_auto] = v_3_auto
   end
@@ -305,15 +294,15 @@ do
 end
 do
   local opt_1_auto
-  local function _43_()
+  local function _42_()
     if (vim.g["_sche#entered"] == nil) then
       do
         local async_8_auto = nil
-        local function _44_()
+        local function _43_()
           notify_main()
           return async_8_auto:close()
         end
-        async_8_auto = vim.loop.new_async(vim.schedule_wrap(_44_))
+        async_8_auto = vim.loop.new_async(vim.schedule_wrap(_43_))
         async_8_auto:send()
       end
       vim.g["_sche#entered"] = true
@@ -322,41 +311,41 @@ do
       return nil
     end
   end
-  local _46_
+  local _45_
   if (type("sche-parse") == "string") then
-    _46_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
+    _45_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
   elseif (type("sche-parse") == "number") then
-    _46_ = "sche-parse"
+    _45_ = "sche-parse"
   else
-    _46_ = print("au: group must be number or string", "sche-parse")
+    _45_ = print("au: group must be number or string", "sche-parse")
   end
-  opt_1_auto = {callback = _43_, group = _46_}
+  opt_1_auto = {callback = _42_, group = _45_}
   for k_2_auto, v_3_auto in pairs((nil or {})) do
     opt_1_auto[k_2_auto] = v_3_auto
   end
   vim.api.nvim_create_autocmd({"VimEnter"}, opt_1_auto)
 end
 local keysource
-local function _48_()
+local function _47_()
   local sy = _get_cnf().syntax
   local date = sy.date.vimstrftime
   local date0 = vim.fn.strftime(("^" .. date))
   return vim.fn.search(date0)
 end
-local function _49_()
+local function _48_()
   local sy = _get_cnf().syntax
   local date = sy.date.vimstrftime
   local date0 = vim.fn.strftime(("^" .. date), (os.time() + 86400))
   return vim.fn.search(date0)
 end
-local function _50_()
+local function _49_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
-  local function _51_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:220")
+  local function _50_(item)
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:205")
     return (item .. " " .. item_dict[item])
   end
-  local function _52_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:222")
+  local function _51_(choice)
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:207")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
@@ -366,22 +355,40 @@ local function _50_()
       return vim.cmd("normal! $")
     end
   end
-  return vim.ui.select({"@", "-", "+", "!", ".", "#"}, {prompt = "Sche built in marks", format_item = _51_}, _52_)
+  return vim.ui.select(vim.tbl_keys(item_dict), {prompt = "Sche built in marks", format_item = _50_}, _51_)
 end
-keysource = {["goto-today"] = _48_, ["goto-tomorrow"] = _49_, ["select-mark"] = _50_}
-local default_keymap
+local function _53_()
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, 1)
+  local ob = parser(lines)
+  return print(vim.inspect(ob))
+end
 local function _54_()
+  local keysource0 = _get_cnf().keysource
+  local keys = vim.fn.sort(vim.tbl_keys(keysource0))
+  local function _55_(item)
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:226")
+    return item
+  end
+  local function _56_(choice)
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:227")
+    return (keysource0)[choice]()
+  end
+  return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _55_}, _56_)
+end
+keysource = {["goto-today"] = _47_, ["goto-tomorrow"] = _48_, ["select-mark"] = _49_, ["parse-sche"] = _53_, ["keysource-navigater"] = _54_}
+local default_keymap
+local function _57_()
   local s = keysource
-  for _, k in ipairs({{"n", "<space><space>t", s["goto-today"], "sche: goto-today"}, {"n", "<space><space>y", s["goto-tomorrow"], "sche: goto-tomorrow"}, {"n", "<space><space>m", s["select-mark"], "sche: select-mark"}}) do
+  for _, k in ipairs({{"n", "<space><space>t", s["goto-today"], "sche: goto-today"}, {"n", "<space><space>y", s["goto-tomorrow"], "sche: goto-tomorrow"}, {"n", "<space><space>m", s["select-mark"], "sche: select-mark"}, {"n", "<space><space>p", s["select-mark"], "sche: parse-sche"}, {"n", "<space><space>n", s["keysource-navigater"], "sche: keysource-navigater"}}) do
     bmap(0, unpack(k))
   end
   return nil
 end
-default_keymap = _54_
+default_keymap = _57_
 local function buf_setup()
   return default_keymap()
 end
-local function _55_()
+local function _58_()
   if _get_cnf().default_keymap then
     buf_setup()
   else
@@ -414,10 +421,10 @@ local function _55_()
     return nil
   end
 end
-create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _55_, pattern = {"*.sche"}, group = "pattern"})
-local function _58_(opt)
-  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:285")
+create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _58_, pattern = {"*.sche"}, group = "pattern"})
+local function _61_(opt)
+  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:290")
   M.setup(opt)
   return set_highlight()
 end
-return {keysource = keysource, setup = _58_}
+return {keysource = keysource, setup = _61_}

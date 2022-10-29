@@ -11,11 +11,6 @@
     (vim.api.nvim_buf_set_keymap bufnr mode key cmd {:noremap true :silent true :desc desc})
     (vim.api.nvim_buf_set_keymap bufnr mode key "" {:callback cmd :noremap true :silent true :desc desc})))
 
-(fn u-cmd [name f ?opt]
-       (let [opt (or ?opt {})]
-         (tset opt :force true)
-         (vim.api.nvim_create_user_command name f opt)))
-
 (fn _cons [x ...]
   [x  ...])
 (fn _pull [x xs]
@@ -112,12 +107,6 @@
       (tset ret date (pack v (. ret date)))
       ))
   ret)
-(u-cmd
-  :ParseSche
-  (λ []
-    (local lines (vim.api.nvim_buf_get_lines 0 0 -1 1))
-    (local ob (parser lines))
-    (print (vim.inspect ob))))
 (fn syntax [group pat ...]
   (vim.cmd
     (concat-with " "
@@ -150,9 +139,7 @@
         default_cnf
         (do
           (tset vim.g :_sche#cnf cnf)
-          cnf))))
-  ; (set_highlight)
-  )
+          cnf)))))
 (fn read-data [data]
   (local notify (. (_get_cnf) :notify))
   (var ret "")
@@ -213,7 +200,7 @@
                        :. :done
                        :# :note})
      (vim.ui.select
-       ["@" :- :+ :! :. :#]
+       (vim.tbl_keys item-dict)
       {:prompt "Sche built in marks"
        :format_item (lambda [item]
                       (.. item " " (. item-dict item)))}
@@ -225,9 +212,23 @@
             (vim.cmd "normal! o")
             (vim.api.nvim_set_current_line (.. "  " choice " "))
             (vim.cmd "normal! $"))))
-      ))})
+      ))
+   :parse-sche (λ []
+    (local lines (vim.api.nvim_buf_get_lines 0 0 -1 1))
+    (local ob (parser lines))
+    (print (vim.inspect ob)))
+   :keysource-navigater (λ []
+    (local keysource (. (_get_cnf) :keysource))
+    (local keys (vim.fn.sort (vim.tbl_keys keysource)))
+    (vim.ui.select
+      keys
+      {:prompt "Sche keysource"
+       :format_item (lambda [item] item)}
+      (λ [choice]
+        ((. keysource choice)))))
+   })
 
-(local default_keymap ; INFO: pub
+(local default_keymap
   (λ []
     (local s keysource)
     (macro desc [d]
@@ -241,6 +242,12 @@
               [:n :<space><space>m
                s.select-mark
                (desc :select-mark)]
+              [:n :<space><space>p
+               s.select-mark
+               (desc :parse-sche)]
+              [:n :<space><space>n
+               s.keysource-navigater
+               (desc :keysource-navigater)]
               ]
          (bmap 0 (unpack k)))))
 (fn buf-setup [] ; INFO: for debug
@@ -280,6 +287,7 @@
    :group :pattern})
 
 {: keysource
- :setup (lambda [opt] (M.setup opt) 
+ :setup (lambda [opt]
+          (M.setup opt)
           (set_highlight))
  }
