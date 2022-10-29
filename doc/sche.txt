@@ -30,7 +30,7 @@ It does not work with zero configuration.  You can use other plugins.
 ------------------------------------------------------------------------------
 PURPOSE							*sche-purpose*
 
-	- To allow scheduling with a small number of characters.
+- To allow scheduling with a small number of characters.
 	(Aiming for a grammar with less typing than org mode or howm)
 
 - To make it machine readable.
