@@ -378,7 +378,7 @@ keysource = {["goto-today"] = _47_, ["goto-tomorrow"] = _48_, ["select-mark"] = 
 local default_keymap
 local function _57_()
   local s = keysource
-  for _, k in ipairs({{"n", "<space><space>t", s["goto-today"], "sche: goto-today"}, {"n", "<space><space>y", s["goto-tomorrow"], "sche: goto-tomorrow"}, {"n", "<space><space>m", s["select-mark"], "sche: select-mark"}, {"n", "<space><space>p", s["select-mark"], "sche: parse-sche"}, {"n", "<space><space>n", s["keysource-navigater"], "sche: keysource-navigater"}}) do
+  for _, k in ipairs({{"n", "<space><space>t", s["goto-today"], "sche: goto-today"}, {"n", "<space><space>y", s["goto-tomorrow"], "sche: goto-tomorrow"}, {"n", "<space><space>m", s["select-mark"], "sche: select-mark"}, {"n", "<space><space>p", s["parse-sche"], "sche: parse-sche"}, {"n", "<space><space>n", s["keysource-navigater"], "sche: keysource-navigater"}}) do
     bmap(0, unpack(k))
   end
   return nil

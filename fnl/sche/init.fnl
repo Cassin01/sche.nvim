@@ -243,7 +243,7 @@
                s.select-mark
                (desc :select-mark)]
               [:n :<space><space>p
-               s.select-mark
+               s.parse-sche
                (desc :parse-sche)]
               [:n :<space><space>n
                s.keysource-navigater
