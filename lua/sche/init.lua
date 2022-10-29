@@ -152,13 +152,16 @@ u_cmd("ParseSche", _23_)
 local function syntax(group, pat, ...)
   return vim.cmd(concat_with(" ", "syntax", "match", group, pat, ...))
 end
+local function set_highlight(group, fg, bg)
+  for _, k in ipairs({{"GCalendarMikan", {fg = "#F4511E"}}, {"GCalendarPeacock", {fg = "#039BE5"}}, {"GCalendarGraphite", {fg = "#616161"}}, {"GCalendarSage", {fg = "#33B679"}}, {"GCalendarBanana", {fg = "#f6bf26"}}, {"GCalendarLavender", {fg = "#7986cb"}}, {"GCalendarTomato", {fg = "#d50000"}}, {"GCalendarFlamingo", {fg = "#e67c73"}}}) do
+    vim.api.nvim_set_hl(0, unpack(k))
+  end
+  return nil
+end
 do
   local opt_1_auto
   local function _24_()
-    for _, k in ipairs({{"GCalendarMikan", {fg = "#F4511E"}}, {"GCalendarPeacock", {fg = "#039BE5"}}, {"GCalendarGraphite", {fg = "#616161"}}, {"GCalendarSage", {fg = "#33B679"}}, {"GCalendarBanana", {fg = "#f6bf26"}}, {"GCalendarLavender", {fg = "#7986cb"}}, {"GCalendarTomato", {fg = "#d50000"}}, {"GCalendarFlamingo", {fg = "#e67c73"}}}) do
-      vim.api.nvim_set_hl(0, unpack(k))
-    end
-    return nil
+    return set_highlight()
   end
   local _25_
   if (type("match-hi-sche") == "string") then
@@ -198,6 +201,7 @@ local function _overwrite(default_cnf0, cnf)
   end
 end
 local function setup(_3fconfig)
+  set_highlight()
   if (_3fconfig == nil) then
     return default_cnf
   else
@@ -338,11 +342,11 @@ end
 local function _50_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _51_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:209")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:212")
     return (item .. " " .. item_dict[item])
   end
   local function _52_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:211")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:214")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))

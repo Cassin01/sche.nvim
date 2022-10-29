@@ -110,8 +110,8 @@
   (vim.cmd
     (concat-with " "
       :syntax :match group pat ...)))
-(au! :match-hi-sche :ColorScheme
-     (each [_ k (ipairs [[:GCalendarMikan {:fg :#F4511E}]
+(fn set_highlight [group fg bg]
+  (each [_ k (ipairs [[:GCalendarMikan {:fg :#F4511E}]
                          [:GCalendarPeacock {:fg :#039BE5}]
                          [:GCalendarGraphite {:fg :#616161}]
                          [:GCalendarSage {:fg :#33B679}]
@@ -120,6 +120,8 @@
                          [:GCalendarTomato {:fg :#d50000}]
                          [:GCalendarFlamingo {:fg :#e67c73}]])]
        (vim.api.nvim_set_hl 0 (unpack k))))
+(au! :match-hi-sche :ColorScheme
+  (set_highlight))
 (fn _overwrite [default_cnf cnf]
   "overwrite cnf with default_cnf
   default_cnf driven"
@@ -135,6 +137,7 @@
       ret)
     (print "Err(sche.nvim): The default_cnf is not table.")))
 (fn setup [?config]
+  (set_highlight)
   (if (= ?config nil)
     default_cnf
     (do
