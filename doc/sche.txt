@@ -1,0 +1,178 @@
+*emacs-key-source.txt*	A schedule management plugin for neovim
+
+Author: Cassin01
+License: MIT license
+
+CONTENTS						*sche-contents*
+
+Introduction		|sche-introduction|
+Install			|sche-install|
+Interface		|sche-interface|
+ OPTIIONS		|sche-options|
+ Functions		  |sche-functions|
+SYNTAX		|sche-syntax|
+ MARKERS		|sche-markers|
+ COMMENTOUT		|sche-commentout|
+Examples		|sche-examples|
+
+==============================================================================
+INTRODUCTION						*sche-introduction*
+
+*sche.nvim* is a text-based schedule management plugin for neovim.
+
+If you don't want to configure plugins, you don't have to use the plugin.
+It does not work with zero configuration.  You can use other plugins.
+
+
+==============================================================================
+INSTALL							*sche-install*
+
+Note: sche.nvim requires Neovim (0.8.0+) (latest is
+recommended).
+
+
+>
+	-- packer.nvim
+	use {
+		'Cassin01/sche.nvim'
+		requires = {"rcarriga/nvim-notify"}
+		config = function()
+			require('sche').setup(
+				{
+					sche_path = (vim.fn.expand '~/path/to/myschedule.sche')
+				}
+			)
+		end
+	}
+<
+
+
+==============================================================================
+INTERFACE						*sche-interface*
+
+
+------------------------------------------------------------------------------
+OPTIIONS						
+
+The default optionis bellow
+
+>
+	local function _5_(annex)
+		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:39")
+		return ("There is a chedule: " .. annex)
+	end
+	local function _6_(annex)
+		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:40")
+		return ("There is a memo: " .. annex)
+	end
+	local function _7_(annex)
+		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:41")
+		return ("There is a todo: " .. annex)
+	end
+	local function _8_(annex)
+		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:42")
+		return ("There is a remainder: " .. annex)
+	end
+	local function _9_(annex)
+		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:43")
+		return ("There is a deadline: " .. annex)
+	end
+	local function _10_(annex)
+		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:44")
+		return ("You have completed: " .. annex)
+	end
+
+	default_cnf = {
+		notify = {
+			["@"] = _5_, 
+			["#"] = _6_, 
+			["+"] = _7_, 
+			["-"] = _8_, 
+			["!"] = _9_, 
+			["."] = _10_
+		}, 
+		sche_path = "none", 
+		syntax = {
+			-- If you are turn of all of syntach match about `.shce` just set `on` false. 
+			on = true, 
+			-- If you want to chagne date expression, you must change bellow tree expressions.
+			date = {
+				vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", 
+				vimstrftime = "%Y/%m/%d"
+			}, 
+			-- You can change the month, weekday, sunday and sataurday expressions.
+			month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", 
+			weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", 
+			sunday = "'\\<Sun\\>'", 
+			saturday = "'\\<Sat\\>'"
+		}
+	}
+<
+
+------------------------------------------------------------------------------
+FUNCTIONS 						*sche-functions*
+
+							*sche.setup()*
+sche.setup({opts})
+	Setup function to be run by user. You must configure the path that there is your .sche file.
+
+	Usage:
+	>
+		require('sche').setup{
+			-- You mast configure sche_path.
+			sche_path = 'path to sche'
+		}
+	<
+
+							*sche.keysource.goto-today*
+sche.keysource.goto-today()
+	Goto todays line.
+
+
+							*sche.keysource.goto-tomorrow*
+sche.keysource.goto-tomorrow()
+	Goto tomorrow line.
+
+							*sche.keysource.select-mark*
+sche.keysource.goto-tomorrow()
+	Select markes.
+
+==============================================================================
+
+SYNTAX							*sche-syntax*
+
+
+Usage
+	>
+	2022/06/25 Sat
+	  @ 10:00-14:00 part time job at MacDonald
+	  - My mothers birthday
+	  ! 23:00 liner algebra homework
+	<
+
+------------------------------------------------------------------------------
+MARKERS						*sche-markers*
+
+@ schedule
+- reminder
++ todo
+! deadline
+. done
+# note
+
+COMMENTOUT						*sche-commentout*
+
+You can comment out by `;` like Lisp.
+
+EXAMPLES						*sche-examples*
+
+If you are Japanese:
+
+	>
+	require('sche').setup({sche_path = vim.fn.expand("~/.config/nvim/data/10.sche"), 
+	-- You can change month expressin like `1月`.
+	syntax = {month = "'^\\(\\d\\|\\d\\d\\)\230\156\136'"}})
+	<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
