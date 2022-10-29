@@ -5,18 +5,16 @@
 (import-macros {: epi : when-let : au! : async-do! } :lua.sche.macros)
 
 ;; Functions
+
 (fn bmap [bufnr mode key cmd desc]
   (if (= (type cmd) :string)
     (vim.api.nvim_buf_set_keymap bufnr mode key cmd {:noremap true :silent true :desc desc})
     (vim.api.nvim_buf_set_keymap bufnr mode key "" {:callback cmd :noremap true :silent true :desc desc})))
 
-
-
 (fn u-cmd [name f ?opt]
        (let [opt (or ?opt {})]
          (tset opt :force true)
          (vim.api.nvim_create_user_command name f opt)))
-
 
 (fn _cons [x ...]
   [x  ...])
@@ -41,6 +39,7 @@
   (table.concat [...] d))
 
 ;;; Main
+
 (macro weekday []
   (let [keywords# [:Fri :Mon :Tue :Wed :Thu]]
     (.. "'" :\<\ "(" (table.concat keywords# :\|) :\ ")'")))
@@ -72,11 +71,12 @@
             :saturday "'\\<Sat\\>'"
                     }
    })
+(local M {})
 (fn _get_cnf []
   "get config"
   (local cnf (. vim.g :_sche#cnf))
   (if (= cnf nil)
-    (setup)
+    (M.setup)
     cnf))
 (local create_autocmd vim.api.nvim_create_autocmd)
 ; (local v-date "\\d\\d\\d\\d/\\d\\d/\\d\\d")
@@ -145,7 +145,7 @@
             (tset ret k new-v))))
       ret)
     (print "Err(sche.nvim): The default_cnf is not table.")))
-(fn setup [?config]
+(fn M.setup [?config]
   (set_highlight)
   (if (= ?config nil)
     default_cnf
@@ -283,5 +283,5 @@
    :group :pattern})
 
 {: keysource
- : setup
+ : M.setup
  }

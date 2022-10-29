@@ -32,7 +32,7 @@ local function read_lines(path)
   local f = io.open(path, "r")
   if (f ~= nil) then
     local function _4_(f0)
-      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:38")
+      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:36")
       return f0.close(f0)
     end
     return _unfold_iter(f.lines(f), f, _4_)
@@ -45,34 +45,35 @@ local function concat_with(d, ...)
 end
 local default_cnf
 local function _6_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:57")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:56")
   return ("There is a chedule: " .. annex)
 end
 local function _7_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:58")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:57")
   return ("There is a memo: " .. annex)
 end
 local function _8_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:59")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:58")
   return ("There is a todo: " .. annex)
 end
 local function _9_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:60")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:59")
   return ("There is a remainder: " .. annex)
 end
 local function _10_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:61")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:60")
   return ("There is a deadline: " .. annex)
 end
 local function _11_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:62")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:61")
   return ("You have completed: " .. annex)
 end
 default_cnf = {default_keymap = true, hl = {GCalendarMikan = {fg = "#F4511E"}, GCalendarPeacock = {fg = "#039BE5"}, GCalendarGraphite = {fg = "#616161"}, GCalendarSage = {fg = "#33B679"}, GCalendarBanana = {fg = "#f6bf26"}, GCalendarLavender = {fg = "#7986cb"}, GCalendarTomato = {fg = "#d50000"}, GCalendarFlamingo = {fg = "#e67c73"}}, notify = {["@"] = _6_, ["#"] = _7_, ["+"] = _8_, ["-"] = _9_, ["!"] = _10_, ["."] = _11_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
+local M = {}
 local function _get_cnf()
   local cnf = vim.g["_sche#cnf"]
   if (cnf == nil) then
-    return setup()
+    return M.setup()
   else
     return cnf
   end
@@ -210,7 +211,7 @@ local function _overwrite(default_cnf0, cnf)
     return print("Err(sche.nvim): The default_cnf is not table.")
   end
 end
-local function setup(_3fconfig)
+M.setup = function(_3fconfig)
   set_highlight()
   if (_3fconfig == nil) then
     return default_cnf
@@ -415,4 +416,4 @@ local function _55_()
   end
 end
 create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _55_, pattern = {"*.sche"}, group = "pattern"})
-return {keysource = keysource, setup = setup}
+return {keysource = keysource, ["M.setup"] = M.setup}
