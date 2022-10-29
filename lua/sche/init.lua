@@ -325,7 +325,7 @@ do
   end
   vim.api.nvim_create_autocmd({"VimEnter"}, opt_1_auto)
 end
-local keysource
+local keysource = {}
 local function _47_()
   local sy = _get_cnf().syntax
   local date = sy.date.vimstrftime
@@ -341,11 +341,11 @@ end
 local function _49_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _50_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:205")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:206")
     return (item .. " " .. item_dict[item])
   end
   local function _51_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:207")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:208")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
@@ -363,15 +363,14 @@ local function _53_()
   return print(vim.inspect(ob))
 end
 local function _54_()
-  local keysource0 = _get_cnf().keysource
-  local keys = vim.fn.sort(vim.tbl_keys(keysource0))
+  local keys = vim.fn.sort(vim.tbl_keys(keysource))
   local function _55_(item)
     _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:226")
     return item
   end
   local function _56_(choice)
     _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:227")
-    return (keysource0)[choice]()
+    return keysource[choice]()
   end
   return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _55_}, _56_)
 end
