@@ -282,5 +282,5 @@
    :group :pattern})
 
 {: keysource
- : M.setup
+ :setup M.setup
  }

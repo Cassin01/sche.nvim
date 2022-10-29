@@ -415,4 +415,4 @@ local function _55_()
   end
 end
 create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _55_, pattern = {"*.sche"}, group = "pattern"})
-return {keysource = keysource, ["M.setup"] = M.setup}
+return {keysource = keysource, setup = M.setup}
