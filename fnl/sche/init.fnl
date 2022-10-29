@@ -46,6 +46,14 @@
     (.. "'" :\<\ "(" (table.concat keywords# :\|) :\ ")'")))
 (local default_cnf
   {:default_keymap true
+   :hl {:GCalendarMikan {:fg :#F4511E}
+        :GCalendarPeacock {:fg :#039BE5}
+        :GCalendarGraphite {:fg :#616161}
+        :GCalendarSage {:fg :#33B679}
+        :GCalendarBanana {:fg :#f6bf26}
+        :GCalendarLavender {:fg :#7986cb}
+        :GCalendarTomato {:fg :#d50000}
+        :GCalendarFlamingo {:fg :#e67c73}}
    :notify {"@" (λ [annex] (.. "There is a chedule: " annex))
             "#" (λ [annex] (.. "There is a memo: " annex) )
             "+" (λ [annex] (.. "There is a todo: " annex) )
@@ -119,15 +127,16 @@
     (concat-with " "
       :syntax :match group pat ...)))
 (fn set_highlight [group fg bg]
-  (each [_ k (ipairs [[:GCalendarMikan {:fg :#F4511E}]
-                         [:GCalendarPeacock {:fg :#039BE5}]
-                         [:GCalendarGraphite {:fg :#616161}]
-                         [:GCalendarSage {:fg :#33B679}]
-                         [:GCalendarBanana {:fg :#f6bf26}]
-                         [:GCalendarLavender {:fg :#7986cb}]
-                         [:GCalendarTomato {:fg :#d50000}]
-                         [:GCalendarFlamingo {:fg :#e67c73}]])]
-       (vim.api.nvim_set_hl 0 (unpack k))))
+  ; (each [_ k (ipairs [[:GCalendarMikan {:fg :#F4511E}]
+  ;                     [:GCalendarPeacock {:fg :#039BE5}]
+  ;                     [:GCalendarGraphite {:fg :#616161}]
+  ;                     [:GCalendarSage {:fg :#33B679}]
+  ;                     [:GCalendarBanana {:fg :#f6bf26}]
+  ;                     [:GCalendarLavender {:fg :#7986cb}]
+  ;                     [:GCalendarTomato {:fg :#d50000}]
+  ;                     [:GCalendarFlamingo {:fg :#e67c73}]])]
+  (each [k v (pairs (. (_get_cnf) :hl))]
+       (vim.api.nvim_set_hl 0 k v))
 (au! :match-hi-sche :ColorScheme
   (set_highlight))
 (fn _overwrite [default_cnf cnf]
@@ -281,7 +290,6 @@
    :pattern [:*.sche]
    :group :pattern})
 
-{; : default_keymap
- : keysource
+{: keysource
  : setup
  }

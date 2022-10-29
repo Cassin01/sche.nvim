@@ -210,7 +210,7 @@ You can generate calander by run the bellow code.
 	    return date;
 	}
 	
-	const week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	const month = ["Febraury", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	
 	const genDates = (num: number): string[] => {
 	    const dates: string[] = new Array();
@@ -223,8 +223,8 @@ You can generate calander by run the bellow code.
 	        console.log(date.getMonth(), nextDayMonth)
 	        if (date.getMonth() != nextDayMonth) {
 	            dates.push("")
-	            // dates.push(String(nextDayMonth + 1) + "月")
-	            dates.push(week[nextDayMonth])
+	            dates.push(month[nextDayMonth]) //or  dates.push(String(nextDayMonth + 1) + "月")
+
 	            dates.push("")
 	        }
 	    }
