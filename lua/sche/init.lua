@@ -415,4 +415,9 @@ local function _55_()
   end
 end
 create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _55_, pattern = {"*.sche"}, group = "pattern"})
-return {keysource = keysource, setup = M.setup}
+local function _58_(opt)
+  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:285")
+  M.setup(opt)
+  return set_highlight()
+end
+return {keysource = keysource, setup = _58_}

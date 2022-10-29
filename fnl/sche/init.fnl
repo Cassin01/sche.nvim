@@ -282,5 +282,6 @@
    :group :pattern})
 
 {: keysource
- :setup M.setup
+ :setup (lambda [opt] (M.setup opt) 
+          (set_highlight))
  }
