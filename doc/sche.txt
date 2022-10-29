@@ -6,6 +6,7 @@ License: MIT license
 CONTENTS						*sche-contents*
 
 INTRODUCTION		|sche-introduction|
+ PURPOSE		|sche-purpose|
 INSTALL			|sche-install|
 INTERFACE		|sche-interface|
  OPTIIONS		|sche-options|
@@ -26,6 +27,14 @@ INTRODUCTION						*sche-introduction*
 If you don't want to configure plugins, you don't have to use the plugin.
 It does not work with zero configuration.  You can use other plugins.
 
+------------------------------------------------------------------------------
+PURPOSE							*sche-purpose*
+
+	- To allow scheduling with a small number of characters.
+	(Aiming for a grammar with less typing than org mode or howm)
+
+- To make it machine readable.
+	To access g:_sche#data to see the schedule parsed into a json-like structure.
 
 ==============================================================================
 INSTALL							*sche-install*
