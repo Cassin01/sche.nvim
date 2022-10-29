@@ -180,7 +180,8 @@
      (when (= vim.g._sche#entered nil)
        (async-do! (notify-main))
        (set vim.g._sche#entered true)))
-(local keysource ; INFO: pub
+(var keysource {})
+(set keysource ; INFO: pub
   {:goto-today (λ []
                  (local sy (. (_get_cnf) :syntax))
                  (local date sy.date.vimstrftime)
@@ -218,7 +219,6 @@
     (local ob (parser lines))
     (print (vim.inspect ob)))
    :keysource-navigater (λ []
-    (local keysource (. (_get_cnf) :keysource))
     (local keys (vim.fn.sort (vim.tbl_keys keysource)))
     (vim.ui.select
       keys
