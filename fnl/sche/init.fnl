@@ -68,9 +68,7 @@
             :month "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'"
             :weekday (weekday)
             :sunday "'\\<Sun\\>'"
-            :saturday "'\\<Sat\\>'"
-                    }
-   })
+            :saturday "'\\<Sat\\>'"}})
 (local M {})
 (fn _get_cnf []
   "get config"

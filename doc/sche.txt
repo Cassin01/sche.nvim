@@ -5,9 +5,9 @@ License: MIT license
 
 CONTENTS						*sche-contents*
 
-Introduction		|sche-introduction|
-Install			|sche-install|
-Interface		|sche-interface|
+INTRODUCTION		|sche-introduction|
+INSTALL			|sche-install|
+INTERFACE		|sche-interface|
  OPTIIONS		|sche-options|
  Functions		|sche-functions|
 SYNTAX			|sche-syntax|
@@ -55,61 +55,35 @@ INTERFACE						*sche-interface*
 
 
 ------------------------------------------------------------------------------
-OPTIIONS						
+OPTIIONS						*sche-options*
 
 The default optionis bellow
 
 	>
-	local function _5_(annex)
-		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:39")
-		return ("There is a chedule: " .. annex)
-	end
-	local function _6_(annex)
-		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:40")
-		return ("There is a memo: " .. annex)
-	end
-	local function _7_(annex)
-		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:41")
-		return ("There is a todo: " .. annex)
-	end
-	local function _8_(annex)
-		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:42")
-		return ("There is a remainder: " .. annex)
-	end
-	local function _9_(annex)
-		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:43")
-		return ("There is a deadline: " .. annex)
-	end
-	local function _10_(annex)
-		_G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:44")
-		return ("You have completed: " .. annex)
-	end
-
-	default_cnf = {
-		notify = {
-			["@"] = _5_, 
-			["#"] = _6_, 
-			["+"] = _7_, 
-			["-"] = _8_, 
-			["!"] = _9_, 
-			["."] = _10_
-		}, 
-		sche_path = "none", 
-		syntax = {
-			-- If you are turn of all of syntach match about `.shce` just set `on` false. 
-			on = true, 
-			-- If you want to chagne date expression, you must change bellow tree expressions.
-			date = {
-				vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", 
-				vimstrftime = "%Y/%m/%d"
-			}, 
-			-- You can change the month, weekday, sunday and sataurday expressions.
-			month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", 
-			weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", 
-			sunday = "'\\<Sun\\>'", 
-			saturday = "'\\<Sat\\>'"
-		}
-	}
+	{:default_keymap true
+	 :hl {:GCalendarMikan {:fg :#F4511E}
+	      :GCalendarPeacock {:fg :#039BE5}
+	      :GCalendarGraphite {:fg :#616161}
+	      :GCalendarSage {:fg :#33B679}
+	      :GCalendarBanana {:fg :#f6bf26}
+	      :GCalendarLavender {:fg :#7986cb}
+	      :GCalendarTomato {:fg :#d50000}
+	      :GCalendarFlamingo {:fg :#e67c73}}
+	 :notify {"@" (λ [annex] (.. "There is a chedule: " annex))
+	          "#" (λ [annex] (.. "There is a memo: " annex) )
+	          "+" (λ [annex] (.. "There is a todo: " annex) )
+	          "-" (λ [annex] (.. "There is a remainder: " annex) )
+	          "!" (λ [annex] (.. "There is a deadline: " annex) )
+	          "." (λ [annex] (.. "You have completed: " annex) )}
+	 :sche_path "none"
+	 :syntax {:on true
+	         :date {:vim_regex "\\d\\d\\d\\d/\\d\\d/\\d\\d"
+	                :lua_regex "%d%d%d%d/%d%d/%d%d"
+	                :vimstrftime "%Y/%m/%d"}
+	         :month "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'"
+	         :weekday (weekday)
+	         :sunday "'\\<Sun\\>'"
+	         :saturday "'\\<Sat\\>'"}}
 	<
 
 ------------------------------------------------------------------------------
