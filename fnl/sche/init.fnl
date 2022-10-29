@@ -79,8 +79,6 @@
     (M.setup)
     cnf))
 (local create_autocmd vim.api.nvim_create_autocmd)
-; (local v-date "\\d\\d\\d\\d/\\d\\d/\\d\\d")
-; (local l-date "%d%d%d%d/%d%d/%d%d")
 (macro thrice-if [sentense lst]
   (fn car [x ...] x)
   (fn cdr [x ...] [...])
@@ -146,7 +144,6 @@
       ret)
     (print "Err(sche.nvim): The default_cnf is not table.")))
 (fn M.setup [?config]
-  (set_highlight)
   (if (= ?config nil)
     default_cnf
     (do
@@ -155,7 +152,8 @@
         default_cnf
         (do
           (tset vim.g :_sche#cnf cnf)
-          cnf)))))
+          cnf))))
+  (set_highlight))
 (fn read-data [data]
   (local notify (. (_get_cnf) :notify))
   (var ret "")

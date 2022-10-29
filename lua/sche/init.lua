@@ -212,18 +212,15 @@ local function _overwrite(default_cnf0, cnf)
   end
 end
 M.setup = function(_3fconfig)
-  set_highlight()
   if (_3fconfig == nil) then
-    return default_cnf
   else
     local cnf = _overwrite(default_cnf, _3fconfig)
     if (cnf == nil) then
-      return default_cnf
     else
       vim.g["_sche#cnf"] = cnf
-      return cnf
     end
   end
+  return set_highlight()
 end
 local function read_data(data)
   local notify = _get_cnf().notify
@@ -353,11 +350,11 @@ end
 local function _50_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _51_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:221")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:219")
     return (item .. " " .. item_dict[item])
   end
   local function _52_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:223")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:221")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
