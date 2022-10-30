@@ -27,7 +27,7 @@ local function read_lines(path)
   local f = io.open(path, "r")
   if (f ~= nil) then
     local function _4_(f0)
-      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:31")
+      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:30")
       return f0.close(f0)
     end
     return _unfold_iter(f.lines(f), f, _4_)
@@ -40,27 +40,27 @@ local function concat_with(d, ...)
 end
 local default_cnf
 local function _6_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:52")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:51")
   return ("There is a chedule: " .. annex)
 end
 local function _7_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:53")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:52")
   return ("There is a memo: " .. annex)
 end
 local function _8_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:54")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:53")
   return ("There is a todo: " .. annex)
 end
 local function _9_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:55")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:54")
   return ("There is a remainder: " .. annex)
 end
 local function _10_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:56")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:55")
   return ("There is a deadline: " .. annex)
 end
 local function _11_(annex)
-  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:57")
+  _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:56")
   return ("You have completed: " .. annex)
 end
 default_cnf = {default_keymap = true, notify_todays_schedule = true, notify_tomorrows_schedule = true, hl = {GCalendarMikan = {fg = "#F4511E"}, GCalendarPeacock = {fg = "#039BE5"}, GCalendarGraphite = {fg = "#616161"}, GCalendarSage = {fg = "#33B679"}, GCalendarBanana = {fg = "#f6bf26"}, GCalendarLavender = {fg = "#7986cb"}, GCalendarTomato = {fg = "#d50000"}, GCalendarFlamingo = {fg = "#e67c73"}}, notify = {["@"] = _6_, ["#"] = _7_, ["+"] = _8_, ["-"] = _9_, ["!"] = _10_, ["."] = _11_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'\\<\\(January\\|Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
@@ -364,11 +364,11 @@ end
 local function _53_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _54_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:217")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:215")
     return (item .. " " .. item_dict[item])
   end
   local function _55_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:219")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:217")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
@@ -388,11 +388,11 @@ end
 local function _58_()
   local keys = vim.fn.sort(vim.tbl_keys(keysource))
   local function _59_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:237")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:234")
     return item
   end
   local function _60_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:238")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:235")
     return keysource[choice]()
   end
   return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _59_}, _60_)
@@ -445,7 +445,7 @@ local function _62_()
 end
 create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _62_, pattern = {"*.sche"}, group = "pattern"})
 local function _65_(opt)
-  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:299")
+  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:296")
   M.setup(opt)
   return set_highlight()
 end
