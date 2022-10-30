@@ -35,12 +35,11 @@
 
 ;;; Main
 
-(macro regex_or [...]
-    (.. "'" :\<\ "(" (table.concat [...] :\|) :\ ")'"))
+(macro weekday []
+  (let [keywords# [:Fri :Mon :Tue :Wed :Thu]]
+    (.. "'" :\<\ "(" (table.concat keywords# :\|) :\ ")'")))
 (local default_cnf
   {:default_keymap true
-   :notify_todays_schedule true
-   :notify_tomorrows_schedule true
    :hl {:GCalendarMikan {:fg :#F4511E}
         :GCalendarPeacock {:fg :#039BE5}
         :GCalendarGraphite {:fg :#616161}
@@ -61,8 +60,8 @@
                    :lua_regex "%d%d%d%d/%d%d/%d%d"
                    :vimstrftime "%Y/%m/%d"
                    }
-            :month (regex_or :January :Febraury :March :April :May :June :July :August :September :October :November :December)
-            :weekday (regex_or :Fri :Mon :Tue :Wed :Thu)
+            :month "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'"
+            :weekday (weekday)
             :sunday "'\\<Sun\\>'"
             :saturday "'\\<Sat\\>'"}})
 (local M {})
@@ -162,28 +161,18 @@
   (when (and (not= sd nil) (not= (length sd) 0))
     (local ll (get-data sd))
     ((require :notify) ll nil {:title title})))
-(fn notify_todays_schedule []
-  (when-let data vim.g._sche#data
-    (local t (os.time))
-    (local today (os.date :%Y/%m/%d t))
-    (do-notify today data "Today's schedule")))
-(fn notify_tomorrows_schedule []
-  (when-let data vim.g._sche#data
-    (local t (os.time))
-    (local tomorrow (os.date :%Y/%m/%d (+ t 86400)))
-    (do-notify tomorrow data "Tomorrow's schedule")))
 (fn notify-main []
   (local sche_path (. (_get_cnf) :sche_path))
   (when (and (not= sche_path nil) (not= sche_path "none"))
     (local lines (read_lines sche_path))
     (when (not= lines nil)
     (local data (parser lines))
-    (set vim.g._sche#data data))
-
-    (when (. (_get_cnf) :notify_todays_schedule)
-      (notify_todays_schedule))
-    (when (. (_get_cnf) :notify_tomorrows_schedule)
-      (notify_tomorrows_schedule))))
+    (set vim.g._sche#data data)
+    (local t (os.time))
+    (local today (os.date :%Y/%m/%d t))
+    (do-notify today data "Today's schedule")
+    (local tomorrow (os.date :%Y/%m/%d (+ t 86400)))
+    (do-notify tomorrow data "Tomorrow's schedule"))))
 (au! :sche-parse [:BufWritePost :BufNewFile :BufReadPost]
      (async-do! (notify-main))
      {:pattern [:*.sche]})
