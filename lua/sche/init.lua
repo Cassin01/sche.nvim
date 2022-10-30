@@ -27,7 +27,7 @@ local function read_lines(path)
   local f = io.open(path, "r")
   if (f ~= nil) then
     local function _4_(f0)
-      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:31")
+      _G.assert((nil ~= f0), "Missing argument f on fnl/sche/init.fnl:30")
       return f0.close(f0)
     end
     return _unfold_iter(f.lines(f), f, _4_)
@@ -340,12 +340,12 @@ local function _48_()
 end
 local function _49_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
-  local function _50_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:206")
+  local function _54_(item)
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:215")
     return (item .. " " .. item_dict[item])
   end
-  local function _51_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:208")
+  local function _55_(choice)
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:217")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
@@ -364,12 +364,12 @@ local function _53_()
 end
 local function _54_()
   local keys = vim.fn.sort(vim.tbl_keys(keysource))
-  local function _55_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:226")
+  local function _59_(item)
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:234")
     return item
   end
-  local function _56_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:227")
+  local function _60_(choice)
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:235")
     return keysource[choice]()
   end
   return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _55_}, _56_)
@@ -420,9 +420,9 @@ local function _58_()
     return nil
   end
 end
-create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _58_, pattern = {"*.sche"}, group = "pattern"})
-local function _61_(opt)
-  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:290")
+create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _62_, pattern = {"*.sche"}, group = "pattern"})
+local function _65_(opt)
+  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:296")
   M.setup(opt)
   return set_highlight()
 end

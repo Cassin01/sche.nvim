@@ -27,8 +27,7 @@
 (fn read_lines [path]
   (local f (io.open path :r))
   (when (not= f nil)
-    (do
-      (_unfold-iter (f.lines f) f (lambda [f] (f.close f))))))
+    (_unfold-iter (f.lines f) f (lambda [f] (f.close f)))))
 
 (fn concat-with [d ...]
   (table.concat [...] d))
@@ -49,11 +48,11 @@
         :GCalendarTomato {:fg :#d50000}
         :GCalendarFlamingo {:fg :#e67c73}}
    :notify {"@" (λ [annex] (.. "There is a chedule: " annex))
-            "#" (λ [annex] (.. "There is a memo: " annex) )
-            "+" (λ [annex] (.. "There is a todo: " annex) )
-            "-" (λ [annex] (.. "There is a remainder: " annex) )
-            "!" (λ [annex] (.. "There is a deadline: " annex) )
-            "." (λ [annex] (.. "You have completed: " annex) )}
+            "#" (λ [annex] (.. "There is a memo: " annex))
+            "+" (λ [annex] (.. "There is a todo: " annex))
+            "-" (λ [annex] (.. "There is a remainder: " annex))
+            "!" (λ [annex] (.. "There is a deadline: " annex))
+            "." (λ [annex] (.. "You have completed: " annex))}
    :sche_path "none"
    :syntax {:on true
             :date {:vim_regex "\\d\\d\\d\\d/\\d\\d/\\d\\d"
@@ -104,8 +103,7 @@
       (do
         (set date (string.match v (.. :^ l-date)))
         (tset ret date []))
-      (tset ret date (pack v (. ret date)))
-      ))
+      (tset ret date (pack v (. ret date)))))
   ret)
 (fn syntax [group pat ...]
   (vim.cmd
@@ -212,8 +210,7 @@
           (do
             (vim.cmd "normal! o")
             (vim.api.nvim_set_current_line (.. "  " choice " "))
-            (vim.cmd "normal! $"))))
-      ))
+            (vim.cmd "normal! $"))))))
    :parse-sche (λ []
     (local lines (vim.api.nvim_buf_get_lines 0 0 -1 1))
     (local ob (parser lines))
