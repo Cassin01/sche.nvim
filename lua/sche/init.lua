@@ -63,7 +63,7 @@ local function _11_(annex)
   _G.assert((nil ~= annex), "Missing argument annex on fnl/sche/init.fnl:56")
   return ("You have completed: " .. annex)
 end
-default_cnf = {default_keymap = true, hl = {GCalendarMikan = {fg = "#F4511E"}, GCalendarPeacock = {fg = "#039BE5"}, GCalendarGraphite = {fg = "#616161"}, GCalendarSage = {fg = "#33B679"}, GCalendarBanana = {fg = "#f6bf26"}, GCalendarLavender = {fg = "#7986cb"}, GCalendarTomato = {fg = "#d50000"}, GCalendarFlamingo = {fg = "#e67c73"}}, notify = {["@"] = _6_, ["#"] = _7_, ["+"] = _8_, ["-"] = _9_, ["!"] = _10_, ["."] = _11_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
+default_cnf = {default_keymap = true, notify_todays_schedule = true, notify_tomorrows_schedule = true, hl = {GCalendarMikan = {fg = "#F4511E"}, GCalendarPeacock = {fg = "#039BE5"}, GCalendarGraphite = {fg = "#616161"}, GCalendarSage = {fg = "#33B679"}, GCalendarBanana = {fg = "#f6bf26"}, GCalendarLavender = {fg = "#7986cb"}, GCalendarTomato = {fg = "#d50000"}, GCalendarFlamingo = {fg = "#e67c73"}}, notify = {["@"] = _6_, ["#"] = _7_, ["+"] = _8_, ["-"] = _9_, ["!"] = _10_, ["."] = _11_}, sche_path = "none", syntax = {on = true, date = {vim_regex = "\\d\\d\\d\\d/\\d\\d/\\d\\d", lua_regex = "%d%d%d%d/%d%d/%d%d", vimstrftime = "%Y/%m/%d"}, month = "'\\<\\(January\\|Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'", weekday = "'\\<\\(Fri\\|Mon\\|Tue\\|Wed\\|Thu\\)'", sunday = "'\\<Sun\\>'", saturday = "'\\<Sat\\>'"}}
 local M = {}
 local function _get_cnf()
   local cnf = vim.g["_sche#cnf"]
@@ -248,6 +248,26 @@ local function do_notify(date, data, title)
     return nil
   end
 end
+local function notify_todays_schedule()
+  local data = vim.g["_sche#data"]
+  if (data ~= nil) then
+    local t = os.time()
+    local today = os.date("%Y/%m/%d", t)
+    return do_notify(today, data, "Today's schedule")
+  else
+    return nil
+  end
+end
+local function notify_tomorrows_schedule()
+  local data = vim.g["_sche#data"]
+  if (data ~= nil) then
+    local t = os.time()
+    local tomorrow = os.date("%Y/%m/%d", (t + 86400))
+    return do_notify(tomorrow, data, "Tomorrow's schedule")
+  else
+    return nil
+  end
+end
 local function notify_main()
   local sche_path = _get_cnf().sche_path
   if ((sche_path ~= nil) and (sche_path ~= "none")) then
@@ -255,11 +275,14 @@ local function notify_main()
     if (lines ~= nil) then
       local data = parser(lines)
       vim.g["_sche#data"] = data
-      local t = os.time()
-      local today = os.date("%Y/%m/%d", t)
-      do_notify(today, data, "Today's schedule")
-      local tomorrow = os.date("%Y/%m/%d", (t + 86400))
-      return do_notify(tomorrow, data, "Tomorrow's schedule")
+    else
+    end
+    if _get_cnf().notify_todays_schedule then
+      notify_todays_schedule()
+    else
+    end
+    if _get_cnf().notify_tomorrows_schedule then
+      return notify_tomorrows_schedule()
     else
       return nil
     end
@@ -269,24 +292,24 @@ local function notify_main()
 end
 do
   local opt_1_auto
-  local function _38_()
+  local function _42_()
     local async_8_auto = nil
-    local function _39_()
+    local function _43_()
       notify_main()
       return async_8_auto:close()
     end
-    async_8_auto = vim.loop.new_async(vim.schedule_wrap(_39_))
+    async_8_auto = vim.loop.new_async(vim.schedule_wrap(_43_))
     return async_8_auto:send()
   end
-  local _40_
+  local _44_
   if (type("sche-parse") == "string") then
-    _40_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
+    _44_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
   elseif (type("sche-parse") == "number") then
-    _40_ = "sche-parse"
+    _44_ = "sche-parse"
   else
-    _40_ = print("au: group must be number or string", "sche-parse")
+    _44_ = print("au: group must be number or string", "sche-parse")
   end
-  opt_1_auto = {callback = _38_, group = _40_}
+  opt_1_auto = {callback = _42_, group = _44_}
   for k_2_auto, v_3_auto in pairs(({pattern = {"*.sche"}} or {})) do
     opt_1_auto[k_2_auto] = v_3_auto
   end
@@ -294,15 +317,15 @@ do
 end
 do
   local opt_1_auto
-  local function _42_()
+  local function _46_()
     if (vim.g["_sche#entered"] == nil) then
       do
         local async_8_auto = nil
-        local function _43_()
+        local function _47_()
           notify_main()
           return async_8_auto:close()
         end
-        async_8_auto = vim.loop.new_async(vim.schedule_wrap(_43_))
+        async_8_auto = vim.loop.new_async(vim.schedule_wrap(_47_))
         async_8_auto:send()
       end
       vim.g["_sche#entered"] = true
@@ -311,34 +334,34 @@ do
       return nil
     end
   end
-  local _45_
+  local _49_
   if (type("sche-parse") == "string") then
-    _45_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
+    _49_ = vim.api.nvim_create_augroup("sche-parse", {clear = true})
   elseif (type("sche-parse") == "number") then
-    _45_ = "sche-parse"
+    _49_ = "sche-parse"
   else
-    _45_ = print("au: group must be number or string", "sche-parse")
+    _49_ = print("au: group must be number or string", "sche-parse")
   end
-  opt_1_auto = {callback = _42_, group = _45_}
+  opt_1_auto = {callback = _46_, group = _49_}
   for k_2_auto, v_3_auto in pairs((nil or {})) do
     opt_1_auto[k_2_auto] = v_3_auto
   end
   vim.api.nvim_create_autocmd({"VimEnter"}, opt_1_auto)
 end
 local keysource = {}
-local function _47_()
+local function _51_()
   local sy = _get_cnf().syntax
   local date = sy.date.vimstrftime
   local date0 = vim.fn.strftime(("^" .. date))
   return vim.fn.search(date0)
 end
-local function _48_()
+local function _52_()
   local sy = _get_cnf().syntax
   local date = sy.date.vimstrftime
   local date0 = vim.fn.strftime(("^" .. date), (os.time() + 86400))
   return vim.fn.search(date0)
 end
-local function _49_()
+local function _53_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _54_(item)
     _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:215")
@@ -355,14 +378,14 @@ local function _49_()
       return vim.cmd("normal! $")
     end
   end
-  return vim.ui.select(vim.tbl_keys(item_dict), {prompt = "Sche built in marks", format_item = _50_}, _51_)
+  return vim.ui.select(vim.tbl_keys(item_dict), {prompt = "Sche built in marks", format_item = _54_}, _55_)
 end
-local function _53_()
+local function _57_()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, 1)
   local ob = parser(lines)
   return print(vim.inspect(ob))
 end
-local function _54_()
+local function _58_()
   local keys = vim.fn.sort(vim.tbl_keys(keysource))
   local function _59_(item)
     _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:234")
@@ -372,22 +395,22 @@ local function _54_()
     _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:235")
     return keysource[choice]()
   end
-  return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _55_}, _56_)
+  return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _59_}, _60_)
 end
-keysource = {["goto-today"] = _47_, ["goto-tomorrow"] = _48_, ["select-mark"] = _49_, ["parse-sche"] = _53_, ["keysource-navigater"] = _54_}
+keysource = {["goto-today"] = _51_, ["goto-tomorrow"] = _52_, ["select-mark"] = _53_, ["parse-sche"] = _57_, ["keysource-navigater"] = _58_}
 local default_keymap
-local function _57_()
+local function _61_()
   local s = keysource
   for _, k in ipairs({{"n", "<space><space>t", s["goto-today"], "sche: goto-today"}, {"n", "<space><space>y", s["goto-tomorrow"], "sche: goto-tomorrow"}, {"n", "<space><space>m", s["select-mark"], "sche: select-mark"}, {"n", "<space><space>p", s["parse-sche"], "sche: parse-sche"}, {"n", "<space><space>n", s["keysource-navigater"], "sche: keysource-navigater"}}) do
     bmap(0, unpack(k))
   end
   return nil
 end
-default_keymap = _57_
+default_keymap = _61_
 local function buf_setup()
   return default_keymap()
 end
-local function _58_()
+local function _62_()
   if _get_cnf().default_keymap then
     buf_setup()
   else
@@ -426,4 +449,4 @@ local function _65_(opt)
   M.setup(opt)
   return set_highlight()
 end
-return {keysource = keysource, setup = _61_}
+return {keysource = keysource, setup = _65_}
