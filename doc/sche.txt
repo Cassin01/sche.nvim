@@ -1,4 +1,4 @@
-*emacs-key-source.txt*	A schedule management plugin for neovim
+*sche.txt*	A schedule management plugin for neovim
 
 Author: Cassin01
 License: MIT license

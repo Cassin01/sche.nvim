@@ -250,7 +250,7 @@
                (desc :keysource-navigater)]
               ]
          (bmap 0 (unpack k)))))
-(fn buf-setup [] ; INFO: for debug
+(fn buf-setup []
   (default_keymap))
 (create_autocmd
   [:BufReadPost :BufNewFile]
@@ -269,7 +269,7 @@
                (local syntax_on (. sy :on))
                (when syntax_on
                    (syntax :Comment "'^;.*'" )
-                   (syntax :Statement sy.month) 
+                   (syntax :Statement sy.month)
                    (syntax :Function (.. "'^" v-date "'"))
                    (syntax :Special "'\\s\\+@'")
                    (syntax :GCalendarBanana "'\\s\\++'")
@@ -278,11 +278,9 @@
                    (syntax :GCalendarBanana "'\\s\\+\\.'")
                    (syntax :GCalendarFlamingo "'\\s\\+!'")
                    (syntax :GCalendarGraphite sy.weekday)
-                   ; (syntax :GCalendarGraphite (weekday))
                    (syntax :GCalendarMikan sy.sunday)
                    (syntax :GCalendarPeacock sy.saturday)
-                   (syntax :GCalendarSage (vim.fn.strftime (.. "'" ftime-date "'"))))
-                 )
+                   (syntax :GCalendarSage (vim.fn.strftime (.. "'" ftime-date "'")))))
    :pattern [:*.sche]
    :group :pattern})
 
