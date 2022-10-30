@@ -89,8 +89,8 @@ The default optionis bellow
 	         :date {:vim_regex "\\d\\d\\d\\d/\\d\\d/\\d\\d"
 	                :lua_regex "%d%d%d%d/%d%d/%d%d"
 	                :vimstrftime "%Y/%m/%d"}
-	         :month "'^\\(Febraury\\|March\\|April\\|May\\|June\\|July\\|August\\|September\\|October\\|November\\|December\\)'"
-	         :weekday (weekday)
+	         :month `abridged`
+	         :weekday `abridged`
 	         :sunday "'\\<Sun\\>'"
 	         :saturday "'\\<Sat\\>'"}}
 	<
