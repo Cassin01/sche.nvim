@@ -24,9 +24,6 @@ INTRODUCTION						*sche-introduction*
 
 *sche.nvim* is inspired by howm syntax.
 
-If you don't want to configure plugins, you don't have to use the plugin.
-It does not work with zero configuration.  You can use other plugins.
-
 ------------------------------------------------------------------------------
 PURPOSE							*sche-purpose*
 
@@ -70,6 +67,8 @@ The default optionis bellow
 
 	>
 	{:default_keymap true
+	 :notify_todays_schedule true
+	 :notify_tomorrows_schedule true
 	 :hl {:GCalendarMikan {:fg :#F4511E}
 	      :GCalendarPeacock {:fg :#039BE5}
 	      :GCalendarGraphite {:fg :#616161}
