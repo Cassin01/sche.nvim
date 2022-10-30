@@ -282,7 +282,7 @@ local function notify_main()
     else
     end
     if _get_cnf().notify_tomorrows_schedule then
-      return notify_todays_schedule()
+      return notify_tomorrows_schedule()
     else
       return nil
     end

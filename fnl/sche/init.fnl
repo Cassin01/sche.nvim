@@ -162,12 +162,12 @@
   (when (and (not= sd nil) (not= (length sd) 0))
     (local ll (get-data sd))
     ((require :notify) ll nil {:title title})))
-(fn notify-todays_schedule []
+(fn notify_todays_schedule []
   (when-let data vim.g._sche#data
     (local t (os.time))
     (local today (os.date :%Y/%m/%d t))
     (do-notify today data "Today's schedule")))
-(fn notify-tomorrows_schedule []
+(fn notify_tomorrows_schedule []
   (when-let data vim.g._sche#data
     (local t (os.time))
     (local tomorrow (os.date :%Y/%m/%d (+ t 86400)))
@@ -183,7 +183,7 @@
     (when (. (_get_cnf) :notify_todays_schedule)
       (notify_todays_schedule))
     (when (. (_get_cnf) :notify_tomorrows_schedule)
-      (notify_todays_schedule))))
+      (notify_tomorrows_schedule))))
 (au! :sche-parse [:BufWritePost :BufNewFile :BufReadPost]
      (async-do! (notify-main))
      {:pattern [:*.sche]})
