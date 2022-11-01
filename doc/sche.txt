@@ -112,23 +112,26 @@ sche.setup({opts})
 							*sche.keysource.goto-today*
 sche.keysource.goto-today()
 	Goto todays line.
-
+	Default key-bind: <space><space>m
 
 							*sche.keysource.goto-tomorrow*
 sche.keysource.goto-tomorrow()
 	Goto tomorrow line.
-
+	Default key-bind: <space><space>y
 							*sche.keysource.select-mark*
 sche.keysource.select-mark()
 	Select markes.
+	Default key-bind: <space><space>m
 
 							*sche.keysource.parse-sche*
 sche.keysource.parse-sche()
 	Parse schedule manually.
+	Default key-bind: <space><space>p
 
 							*sche.keysource.keysource-navigater*
 sche.keysource.keysource-navigater()
 	A keysource launcher.
+	Default key-bind: <space><space>n
 
 ==============================================================================
 
