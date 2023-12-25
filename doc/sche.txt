@@ -20,9 +20,9 @@ EXAMPLES		|sche-examples|
 ==============================================================================
 INTRODUCTION						*sche-introduction*
 
-*sche.nvim* is a text-based schedule management plugin for neovim.
+|sche.nvim| is a text-based schedule management plugin for neovim.
 
-*sche.nvim* is inspired by howm syntax.
+|sche.nvim| is inspired by howm syntax.
 
 ------------------------------------------------------------------------------
 PURPOSE							*sche-purpose*
