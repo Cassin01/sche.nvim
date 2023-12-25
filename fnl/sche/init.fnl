@@ -72,6 +72,7 @@
     (M.setup)
     cnf))
 (local create_autocmd vim.api.nvim_create_autocmd)
+(local create_augroup vim.api.nvim_create_augroup)
 (macro thrice-if [sentense lst]
   (fn car [x ...] x)
   (fn cdr [x ...] [...])
@@ -290,7 +291,7 @@
                    (syntax :GCalendarPeacock sy.saturday)
                    (syntax :GCalendarSage (vim.fn.strftime (.. "'" ftime-date "'")))))
    :pattern [:*.sche]
-   :group :pattern})
+   :group (create_augroup :sche-syntax {:clear true})})
 
 {: keysource
  :setup (lambda [opt]

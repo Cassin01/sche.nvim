@@ -74,6 +74,7 @@ local function _get_cnf()
   end
 end
 local create_autocmd = vim.api.nvim_create_autocmd
+local create_augroup = vim.api.nvim_create_augroup
 local function append(lst, x)
   lst[(#lst + 1)] = x
   return lst
@@ -364,11 +365,11 @@ end
 local function _53_()
   local item_dict = {["@"] = "schedule", ["-"] = "reminder", ["+"] = "todo", ["!"] = "deadline", ["."] = "done", ["#"] = "note"}
   local function _54_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:215")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:216")
     return (item .. " " .. item_dict[item])
   end
   local function _55_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:217")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:218")
     local cline = vim.api.nvim_get_current_line()
     if (cline == "") then
       return vim.api.nvim_set_current_line(("  " .. choice .. " "))
@@ -388,11 +389,11 @@ end
 local function _58_()
   local keys = vim.fn.sort(vim.tbl_keys(keysource))
   local function _59_(item)
-    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:234")
+    _G.assert((nil ~= item), "Missing argument item on fnl/sche/init.fnl:235")
     return item
   end
   local function _60_(choice)
-    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:235")
+    _G.assert((nil ~= choice), "Missing argument choice on fnl/sche/init.fnl:236")
     return keysource[choice]()
   end
   return vim.ui.select(keys, {prompt = "Sche keysource", format_item = _59_}, _60_)
@@ -443,9 +444,9 @@ local function _62_()
     return nil
   end
 end
-create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _62_, pattern = {"*.sche"}, group = "pattern"})
+create_autocmd({"BufReadPost", "BufNewFile"}, {callback = _62_, pattern = {"*.sche"}, group = create_augroup("sche-syntax", {clear = true})})
 local function _65_(opt)
-  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:296")
+  _G.assert((nil ~= opt), "Missing argument opt on fnl/sche/init.fnl:297")
   M.setup(opt)
   return set_highlight()
 end
