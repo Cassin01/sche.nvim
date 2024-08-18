@@ -19,11 +19,11 @@
 (fn _unfold-iter [seed ?object ?finish]
   (let [v (seed)]
     (if (= nil v)
-    (do
-      (when (and (not= ?finish nil) (not= ?object nil))
-        (?finish ?object))
-      [])
-    (_pull v (_unfold-iter seed ?object ?finish)))))
+      (do
+        (when (and (not= ?finish nil) (not= ?object nil))
+          (?finish ?object))
+        [])
+      (_pull v (_unfold-iter seed ?object ?finish)))))
 (fn read_lines [path]
   (local f (io.open path :r))
   (when (not= f nil)
@@ -35,7 +35,7 @@
 ;;; Main
 
 (macro regex_or [...]
-    (.. "'" :\<\ "(" (table.concat [...] :\|) :\ ")'"))
+  (.. "'" :\<\ "(" (table.concat [...] :\|) :\ ")'"))
 (local default_cnf
   {:default_keymap true
    :notify_todays_schedule true
@@ -110,12 +110,12 @@
 (fn syntax [group pat ...]
   (vim.cmd
     (concat-with " "
-      :syntax :match group pat ...)))
+                 :syntax :match group pat ...)))
 (fn set_highlight [group fg bg]
   (each [k v (pairs (. (_get_cnf) :hl))]
-       (vim.api.nvim_set_hl 0 k v)))
+    (vim.api.nvim_set_hl 0 k v)))
 (au! :match-hi-sche :ColorScheme
-  (set_highlight))
+     (set_highlight))
 (fn _overwrite [default_cnf cnf]
   "overwrite cnf with default_cnf
   default_cnf driven"
@@ -125,9 +125,9 @@
       (each [k v (pairs default_cnf)]
         (if (= (type v) :table)
           (when-let new-v (. cnf k)
-            (tset ret k (_overwrite v new-v)))
+                    (tset ret k (_overwrite v new-v)))
           (when-let new-v (. cnf k)
-            (tset ret k new-v))))
+                    (tset ret k new-v))))
       ret)
     (print "Err(sche.nvim): The default_cnf is not table.")))
 (fn M.setup [?config]
@@ -163,21 +163,21 @@
     ((require :notify) ll nil {:title title})))
 (fn notify_todays_schedule []
   (when-let data vim.g._sche#data
-    (local t (os.time))
-    (local today (os.date :%Y/%m/%d t))
-    (do-notify today data "Today's schedule")))
+            (local t (os.time))
+            (local today (os.date :%Y/%m/%d t))
+            (do-notify today data "Today's schedule")))
 (fn notify_tomorrows_schedule []
   (when-let data vim.g._sche#data
-    (local t (os.time))
-    (local tomorrow (os.date :%Y/%m/%d (+ t 86400)))
-    (do-notify tomorrow data "Tomorrow's schedule")))
+            (local t (os.time))
+            (local tomorrow (os.date :%Y/%m/%d (+ t 86400)))
+            (do-notify tomorrow data "Tomorrow's schedule")))
 (fn notify-main []
   (local sche_path (. (_get_cnf) :sche_path))
   (when (and (not= sche_path nil) (not= sche_path "none"))
     (local lines (read_lines sche_path))
     (when (not= lines nil)
-    (local data (parser lines))
-    (set vim.g._sche#data data))
+      (local data (parser lines))
+      (set vim.g._sche#data data))
 
     (when (. (_get_cnf) :notify_todays_schedule)
       (notify_todays_schedule))
@@ -192,50 +192,50 @@
        (set vim.g._sche#entered true)))
 (var keysource {})
 (set keysource ; INFO: pub
-  {:goto-today (λ []
-                 (local sy (. (_get_cnf) :syntax))
-                 (local date sy.date.vimstrftime)
-                 (local date (vim.fn.strftime (.. "^" date)))
-                 (vim.fn.search date))
-   :goto-tomorrow (λ []
+     {:goto-today (λ []
                     (local sy (. (_get_cnf) :syntax))
                     (local date sy.date.vimstrftime)
-                    (local date (vim.fn.strftime (.. "^" date) (+ (os.time) 86400)))
+                    (local date (vim.fn.strftime (.. "^" date)))
                     (vim.fn.search date))
-   :select-mark
-   (λ []
-     (local item-dict {"@" :schedule
-                       :- :reminder
-                       :+ :todo
-                       :! :deadline
-                       :. :done
-                       :# :note})
-     (vim.ui.select
-       (vim.tbl_keys item-dict)
-      {:prompt "Sche built in marks"
-       :format_item (lambda [item]
-                      (.. item " " (. item-dict item)))}
-      (λ [choice]
-        (local cline (vim.api.nvim_get_current_line))
-        (if (= cline "")
-          (vim.api.nvim_set_current_line (.. "  " choice " "))
-          (do
-            (vim.cmd "normal! o")
-            (vim.api.nvim_set_current_line (.. "  " choice " "))
-            (vim.cmd "normal! $"))))))
-   :parse-sche (λ []
-    (local lines (vim.api.nvim_buf_get_lines 0 0 -1 1))
-    (local ob (parser lines))
-    (print (vim.inspect ob)))
-   :keysource-navigater (λ []
-    (local keys (vim.fn.sort (vim.tbl_keys keysource)))
-    (vim.ui.select
-      keys
-      {:prompt "Sche keysource"
-       :format_item (lambda [item] item)}
-      (λ [choice]
-        ((. keysource choice)))))
-   })
+      :goto-tomorrow (λ []
+                       (local sy (. (_get_cnf) :syntax))
+                       (local date sy.date.vimstrftime)
+                       (local date (vim.fn.strftime (.. "^" date) (+ (os.time) 86400)))
+                       (vim.fn.search date))
+      :select-mark
+      (λ []
+        (local item-dict {"@" :schedule
+                          :- :reminder
+                          :+ :todo
+                          :! :deadline
+                          :. :done
+                          :# :note})
+        (vim.ui.select
+          (vim.tbl_keys item-dict)
+          {:prompt "Sche built in marks"
+           :format_item (lambda [item]
+                          (.. item " " (. item-dict item)))}
+          (λ [choice]
+            (local cline (vim.api.nvim_get_current_line))
+            (if (= cline "")
+              (vim.api.nvim_set_current_line (.. "  " choice " "))
+              (do
+                (vim.cmd "normal! o")
+                (vim.api.nvim_set_current_line (.. "  " choice " "))
+                (vim.cmd "normal! $"))))))
+      :parse-sche (λ []
+                    (local lines (vim.api.nvim_buf_get_lines 0 0 -1 1))
+                    (local ob (parser lines))
+                    (print (vim.inspect ob)))
+      :keysource-navigater (λ []
+                             (local keys (vim.fn.sort (vim.tbl_keys keysource)))
+                             (vim.ui.select
+                               keys
+                               {:prompt "Sche keysource"
+                                :format_item (lambda [item] item)}
+                               (λ [choice]
+                                 ((. keysource choice)))))
+      })
 
 (local default_keymap
   (λ []
@@ -262,7 +262,7 @@
 (fn buf-setup []
   (default_keymap))
 (create_autocmd
-  [:BufReadPost :BufNewFile]
+  [:BufReadPost :BufNewFile :BufWinEnter]
   {:callback (λ []
                (when (. (_get_cnf) :default_keymap)
                  (buf-setup))
@@ -277,19 +277,19 @@
                (local ftime-date sy.date.vimstrftime)
                (local syntax_on (. sy :on))
                (when syntax_on
-                   (syntax :Comment "'^;.*'" )
-                   (syntax :Statement sy.month)
-                   (syntax :Function (.. "'^" v-date "'"))
-                   (syntax :Special "'\\s\\+@'")
-                   (syntax :GCalendarBanana "'\\s\\++'")
-                   (syntax :Special "'\\s\\+-'")
-                   (syntax :GCalendarLavender "'\\s\\+#'")
-                   (syntax :GCalendarBanana "'\\s\\+\\.'")
-                   (syntax :GCalendarFlamingo "'\\s\\+!'")
-                   (syntax :GCalendarGraphite sy.weekday)
-                   (syntax :GCalendarMikan sy.sunday)
-                   (syntax :GCalendarPeacock sy.saturday)
-                   (syntax :GCalendarSage (vim.fn.strftime (.. "'" ftime-date "'")))))
+                 (syntax :Comment "'^;.*'" )
+                 (syntax :Statement sy.month)
+                 (syntax :Function (.. "'^" v-date "'"))
+                 (syntax :Special "'\\s*@'") ; schedule
+                 (syntax :GCalendarBanana "'\\s*+'") ; todo
+                 (syntax :Special "'\\s*-'") ; reminder
+                 (syntax :GCalendarLavender "'\\s*#'") ; note
+                 (syntax :GCalendarBanana "'\\s*+\\.'") ; done
+                 (syntax :GCalendarFlamingo "'\\s*!'") ; deadline
+                 (syntax :GCalendarGraphite sy.weekday)
+                 (syntax :GCalendarMikan sy.sunday)
+                 (syntax :GCalendarPeacock sy.saturday)
+                 (syntax :GCalendarSage (vim.fn.strftime (.. "'" ftime-date "'")))))
    :pattern [:*.sche]
    :group (create_augroup :sche-syntax {:clear true})})
 
